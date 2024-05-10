@@ -10,6 +10,8 @@ class AdsHelper {
   BannerAd? bannerAd;
   InterstitialAd? interstitialAd;
   RewardedAd? rewardedAd;
+  NativeAd? nativeAd;
+  AppOpenAd? appOpenAd;
 
   var bannerId = Platform.isAndroid
       ? "ca-app-pub-3940256099942544/6300978111"
@@ -22,6 +24,14 @@ class AdsHelper {
   var rewardedId = Platform.isAndroid
       ? "ca-app-pub-3940256099942544/5224354917"
       : "ca-app-pub-3940256099942544/1712485313";
+
+  var nativeId = Platform.isAndroid
+      ? "ca-app-pub-3940256099942544/2247696110"
+      : "ca-app-pub-3940256099942544/3986624511";
+
+  var openId = Platform.isAndroid
+      ? "ca-app-pub-3940256099942544/9257395921"
+      : "ca-app-pub-3940256099942544/5575463023";
 
   void initBanner() {
     bannerAd = BannerAd(
@@ -54,7 +64,7 @@ class AdsHelper {
         request: AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
-            rewardedAd =ad;
+            rewardedAd = ad;
           },
           onAdFailedToLoad: (error) {
             print("$error");
@@ -62,7 +72,35 @@ class AdsHelper {
         ));
   }
 
-  // void initNative() {}
+  // void initNative() {
+  //   nativeAd = NativeAd(
+  //     adUnitId: nativeId,
+  //     listener: NativeAdListener(
+  //       onAdLoaded: (ad) {
+  //         nativeAd = ad as NativeAd?;
+  //       },
+  //     ),
+  //     request: AdRequest(),
+  //     nativeTemplateStyle: NativeTemplateStyle(
+  //       templateType: TemplateType.small
+  //     ),
+  //   );
   //
-  // void initOpenAds() {}
+  //   nativeAd!.load();
+  // }
+
+  void initOpenAds() {
+    AppOpenAd.load(
+      adUnitId: openId,
+      request: AdRequest(),
+      adLoadCallback: AppOpenAdLoadCallback(
+        onAdLoaded: (ad) {
+          appOpenAd = ad;
+        },
+        onAdFailedToLoad: (error) {
+          print("$error");
+        },
+      ),
+    );
+  }
 }

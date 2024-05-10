@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ads/util/ads_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,20 @@ class _HomeScreenState extends State<HomeScreen> {
     AdsHelper.adsHelper.initBanner();
     AdsHelper.adsHelper.initIntertital();
     AdsHelper.adsHelper.initReward();
+    // AdsHelper.adsHelper.initNative();
+    AdsHelper.adsHelper.initOpenAds();
+
+    Timer(Duration(seconds: 3), () {
+      if (AdsHelper.adsHelper.appOpenAd != null) {
+        AdsHelper.adsHelper.appOpenAd!.show();
+        AdsHelper.adsHelper.appOpenAd!.fullScreenContentCallback =
+            FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+
+              },
+            );
+      } else {}
+    });
   }
 
   @override
@@ -66,6 +82,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Text("RewardAds"),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (AdsHelper.adsHelper.appOpenAd != null) {
+                    AdsHelper.adsHelper.appOpenAd!.show();
+                    AdsHelper.adsHelper.initOpenAds();
+                  } else {
+                    AdsHelper.adsHelper.initOpenAds();
+                  }
+                },
+                child: const Text("OpenAds"),
+              ),
               AdsHelper.adsHelper.bannerAd == null
                   ? Container()
                   : SizedBox(
@@ -74,6 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ad: AdsHelper.adsHelper.bannerAd!,
                       ),
                     ),
+              // AdsHelper.adsHelper.nativeAd == null
+              //     ? Container()
+              //     : SizedBox(
+              //         height: 200,
+              //         child: AdWidget(
+              //           ad: AdsHelper.adsHelper.nativeAd!,
+              //         ),
+              //       ),
             ],
           ),
         ),
